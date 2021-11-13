@@ -1,0 +1,30 @@
+{
+  "name": "rubygym",
+  "version": "1.0.0",
+  "description": "rubygym",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon --inspect index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/voquangduc2205/test.git"
+  },
+  "keywords": [
+    "quang",
+    "duc"
+  ],
+  "author": "quang duc",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/voquangduc2205/test/issues"
+  },
+  "homepage": "https://github.com/voquangduc2205/test#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-session": "^1.17.2",
+    "mysql": "^2.18.1",
+    "nodemon": "^2.0.15"
+  }
+}
