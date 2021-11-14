@@ -1,8 +1,10 @@
 const mysql = require('mysql');
+const { reset } = require('nodemon');
 
 const database = require('./database.js');
 
 const createRestApi = app => {
+    
     app.post('/user/login', async (request, response) => {
         if (request.session.userId) {
             response.json({result: 'ERROR', message: 'User already logged in.'});
@@ -45,6 +47,39 @@ const createRestApi = app => {
             response.json({result: 'ERROR', message: 'User is not logged in.'});
         }
     });
+
+    app.post('/user/change_pass', async (request, response) => {
+        if (!request.session.userId) {
+            response.json({result: 'ERROR', message: 'User need to log in first.'});
+        } else {
+            const reset = {
+                curPassword: request.body.curPassword,
+                newPassword: request.body.newPassword,
+                cnfPassword: request.body.cnfPassword
+            };
+            const connection = await database.createConnection();
+            try {
+                const result = await connection.query(`
+                    SELECT password 
+                    FROM users 
+                    WHERE 
+                            id=${mysql.escape(request.session.userId)}
+                    LIMIT 1
+                `);
+                if(reset.curPassword === result[0].password && reset.newPassword === reset.cnfPassword){
+                    response.json({result: 'SUCCESS', message: 'Change password successfully.'});
+                }else{
+                    response.json({result: 'ERROR'});
+                }
+            } catch(e) {
+                console.error(e);
+                response.json({result: 'ERROR', message: 'Request operation error.'});
+            } finally {
+                await connection.end();
+            }
+        }
+    });
+
 };
 
 

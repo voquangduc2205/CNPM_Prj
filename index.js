@@ -26,8 +26,9 @@ app.use(
     })
 );
 
-createRestApi(app);
 createViewApi(app);
+createRestApi(app);
+
 
 app.get('/', function(req, res) {
     res.send('hello world');

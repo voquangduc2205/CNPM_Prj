@@ -19,15 +19,46 @@
         };
     </script>
 
-    <div>User already logged in.</div>
-    <form method="post" onsubmit="loginUser(this); return false;">
-        <span>Current Password:</span><input type="test" name="password" value="" /><br />
-        <span>New Password:    </span><input type="test" name="new_password" value="" /><br />
-        <span>Confirm Password:</span><input type="test" name="cnf_password" value="" /><br />
-        <button>Submit</button> <button>Cancel</button>
+<script>
 
+    const ChangePass= async form => {
+        try {
+            const response = await fetch('/user/change_pass', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    curPassword: form.curPassword.value,
+                    newPassword: form.newPassword.value,
+                    cnfPassword: form.cnfPassword.value
+                })
+            });
+            const data = await response.json();
+            if (data.result === 'SUCCESS') {
+                alert('User changed password successfully!');
+                location.reload();
+            } else {
+                alert('Error...');
+            }
+        } catch(e) {
+            console.error(e);
+            alert('Request error!');
+        }
+    };
+</script>
+    <div>User already logged in.</div>
+
+    <form method="post" onsubmit="ChangePass(this); return false;">
+        <span>Current Password:</span><input type="test" name="curPassword" value="" /><br />
+        <span>New Password:    </span><input type="test" name="newPassword" value="" /><br />
+        <span>Confirm Password:</span><input type="test" name="cnfPassword" value="" /><br />
+        <button>Submit</button>
+    
     </form>
+
     <br> </br>
     <button onclick="logoutUser(this); return false;">Logout</button>
+    
 </body>
 </html>
